@@ -1,0 +1,18 @@
+swagger: "2.0"
+info:
+  title: Blog API
+  description: Simple blog app
+  version: 1.0.0
+host: api.blog.mrwhoknows.com
+schemes:
+  - https
+paths:
+  /api/v1/articles:
+    get:
+      summary: Returns a list of blog articles.
+      description: Returns a list of blog article metadata
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
