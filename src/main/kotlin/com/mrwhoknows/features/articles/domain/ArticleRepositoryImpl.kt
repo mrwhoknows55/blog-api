@@ -1,24 +1,18 @@
 package com.mrwhoknows.features.articles.domain
 
+import com.mrwhoknows.features.articles.data.ArticleLocalDataSource
+import com.mrwhoknows.features.articles.domain.mapper.toDTO
 import com.mrwhoknows.features.articles.domain.model.ArticleDTO
-import java.util.UUID
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
-class ArticleRepositoryImpl : ArticleRepository {
-    override suspend fun getArticles(): List<ArticleDTO> = listOf(
-        ArticleDTO(
-            id = UUID.randomUUID().toString(),
-            authorName = "author",
-            body = "lorem ipsum body",
-            createdAt = System.currentTimeMillis(),
-            lastEdited = System.currentTimeMillis(),
-            title = "Title: ${System.currentTimeMillis()}",
-            description = "description lorem ipsum",
-            tags = listOf("tag1", "tag2"),
-            viewCount = 20,
-            wordCount = 100,
-            coverImg = "",
-            slug = "test-slug-1",
-            isPublished = true
-        )
-    )
+class ArticleRepositoryImpl(
+    private val articleDataSource: ArticleLocalDataSource
+) : ArticleRepository {
+    override suspend fun getArticles(): List<ArticleDTO> {
+        val articles = newSuspendedTransaction {
+            val allArticles = articleDataSource.getAllArticles()
+            return@newSuspendedTransaction allArticles.map { it.toDTO() }
+        }
+        return articles
+    }
 }

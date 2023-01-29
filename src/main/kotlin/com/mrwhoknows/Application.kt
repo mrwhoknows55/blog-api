@@ -3,6 +3,7 @@ package com.mrwhoknows
 import ch.qos.logback.classic.Logger
 import com.mrwhoknows.config.AppConfig
 import com.mrwhoknows.config.setupConfig
+import com.mrwhoknows.db.DBFactory
 import com.mrwhoknows.di.appModule
 import com.mrwhoknows.plugins.*
 import io.ktor.server.application.*
@@ -25,7 +26,8 @@ fun Application.module(
     }
     setupConfig()
     val appConfig by inject<AppConfig>()
-
+    val databaseFactory by inject<DBFactory>()
+    databaseFactory.connect()
     if (!appConfig.serverConfig.isProd) {
         val root = LoggerFactory.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME) as Logger
         root.level = ch.qos.logback.classic.Level.TRACE

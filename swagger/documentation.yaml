@@ -3,14 +3,15 @@ info:
   title: Blog API
   description: Simple blog app
   version: 1.0.0
-host: api.blog.mrwhoknows.com
+host: localhost:8080
 schemes:
+  - http
   - https
 paths:
-  /api/v1/articles:
+  /api/v1/articles/all:
     get:
-      summary: Returns a list of blog articles.
-      description: Returns a list of blog article metadata
+      summary: Get a list of all blog articles.
+      description: Returns a list of all blog articles
       produces:
         - application/json
       responses:
